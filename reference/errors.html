@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>错误码对照 — HUMAN / DOG / CAT | API SPEC 项目</title>
+<meta name="description" content="三系统错误码逐条对照：谁在异常、谁在拒绝、谁的异常来自你。">
+<link rel="stylesheet" href="../assets/css/spec.css">
+<style>
+  .single main { max-width: 900px; margin: 0 auto; padding: 44px 28px 140px; }
+  td.c { text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="single">
+  <main id="content">
+    <span class="doc-tag">REFERENCE / STATUS CODES</span>
+    <h1>错误码对照</h1>
+    <div class="subtitle">同一个状态码，在三个系统里说的其实是三件不同的事。</div>
+
+    <h2>逐条对照</h2>
+    <table>
+      <tr><th>码</th><th>HUMAN</th><th>DOG</th><th>CAT</th></tr>
+      <tr>
+        <td><code>200</code></td>
+        <td>返回 <code>200 OK</code> 并说"没问题"时，内部可能已 <code>CPU 97% / 情绪容量 2%</code>。不可据此判断健康度。</td>
+        <td>可信。<strong>本系统不具备撒谎功能</strong>，外部输出与内部状态一致。</td>
+        <td>少数情况，且随时可能改判。</td>
+      </tr>
+      <tr>
+        <td><code>204</code></td>
+        <td>沉默。需要你自己解析含义，且解析结果经常错误。</td>
+        <td>不出现。它连沉默都是有声的。</td>
+        <td>最常用状态码：收到请求，返回空响应，不回退。</td>
+      </tr>
+      <tr>
+        <td><code>401</code></td>
+        <td>不说，但存在。需要长期建立信任凭证。</td>
+        <td>不使用。对全人类默认授权 —— 本系统最大的安全设计缺陷，也是最著名的设计特性。</td>
+        <td>最常见错误码。对维护者默认全量拒绝。</td>
+      </tr>
+      <tr>
+        <td><code>403</code></td>
+        <td>拒绝，且通常不解释原因。</td>
+        <td>不使用。它不懂得拒绝你。</td>
+        <td>门是关着的。任何关闭的门都被视为对根目标的挑战。</td>
+      </tr>
+      <tr>
+        <td><code>404</code></td>
+        <td>"我没事"，语义为"我不想说"。</td>
+        <td>不使用。它一定在，只是可能在睡觉。</td>
+        <td>你需要它时不可用；不需要它时它一直在你键盘上。</td>
+      </tr>
+      <tr>
+        <td><code>405</code></td>
+        <td>不适用。</td>
+        <td>洗澡接口。所有 method 均为 Not Allowed。</td>
+        <td>摸肚子接口。陷阱式实现，露出肚子不构成授权。</td>
+      </tr>
+      <tr>
+        <td><code>409</code></td>
+        <td>同一句话发给两个人，三个人得出不同解析。</td>
+        <td>同一资源（球）被两只狗同时请求。不升级为冲突，只表现为更用力地叹气。</td>
+        <td>你摸的时间到了。冲突响应可能附带咬合，属正常流控。</td>
+      </tr>
+      <tr>
+        <td><code>418</code></td>
+        <td>I AM A HUMAN — 拒绝被当作生产力指标。</td>
+        <td>I AM A DOG — 拒绝被误认为 Cat。</td>
+        <td>I AM A CAT — 拒绝被指挥，语义与 RFC 2324 一致。</td>
+      </tr>
+      <tr>
+        <td><code>429</code></td>
+        <td>情绪容量耗尽。表现形式为"再说一句试试"。</td>
+        <td>不拦截。今天已第二十次握手，第廿一次仍然会成功。</td>
+        <td>反复伸手（轮询）触发限流。</td>
+      </tr>
+      <tr>
+        <td><code>451</code></td>
+        <td>因不可抗力拒绝。原因通常与你无关，与制度有关。</td>
+        <td>BATH UNAVAILABLE — 法律与秩序都拦不住这次洗澡，但它自己可以。</td>
+        <td>被抱起时的整体僵直，属自保措施。</td>
+      </tr>
+      <tr>
+        <td><code>500</code></td>
+        <td>崩溃常发生在无人看见的时刻。</td>
+        <td>仅在兽医院门口出现，伴随全身可达震颤。已归档问题 #1994。</td>
+        <td>不适用。本系统不认为自己会出错。</td>
+      </tr>
+      <tr>
+        <td><code>503</code></td>
+        <td>暂时无法响应。恢复时间不确定，通常需要睡眠。</td>
+        <td>暂时自我下线（躲进毯子），约 10 分钟自动恢复。</td>
+        <td>选择性不存在。恢复时间未知，且不可查询。</td>
+      </tr>
+      <tr>
+        <td><code>504</code></td>
+        <td>不出现。它不会超时，只会一直等。</td>
+        <td>不出现。它只会一直等 —— 且从不计算等待是否划算。</td>
+        <td>凝视虚空的超长挂起状态。无超时配置。</td>
+      </tr>
+    </table>
+
+    <h2>读法总结</h2>
+    <div class="quick" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+      <blockquote>HUMAN 的错误码，多数是<strong>内部状态的对外投射</strong>：你看到的码，不一定是它真实的码。</blockquote>
+      <blockquote>DOG 的错误码，多数是<strong>给你的说明书</strong>：异常几乎全部发生在你这一侧，它只是在超发服务。</blockquote>
+      <blockquote>CAT 的错误码，多数是<strong>给你的判决书</strong>：不是流程出了问题，是你的请求本身没有被承认。</blockquote>
+    </div>
+
+    <hr class="divider">
+    <div class="end-note">本页为三系统错误码的合并视图，各自正文中的版本为权威。</div>
+  </main>
+</div>
+
+<script src="../assets/js/render.js"></script>
+<script>SpecSite.mountChrome({ root: "../", active: "errors" });</script>
+
+</body>
+</html>

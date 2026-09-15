@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUMAN API — 上游规范与三方对照 | API SPEC 项目</title>
+<meta name="description" content="本项目的外部起点：HUMAN API（人类接口规范）。此处仅作引用与三方对照，不复制原文。">
+<link rel="stylesheet" href="../assets/css/spec.css">
+<style>
+  .layout.single { display: block; max-width: none; }
+  .single main { max-width: 820px; margin: 0 auto; padding: 44px 28px 140px; }
+  .sys-map { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; }
+  .quote-src { font-size: 13px; color: var(--faint); margin-top: -6px; }
+</style>
+</head>
+<body>
+
+<div class="layout single">
+  <main id="content">
+    <span class="doc-tag">REFERENCE / EXTERNAL</span>
+    <h1>HUMAN API — 上游规范与三方对照</h1>
+    <div class="subtitle">
+      本项目的外部起点。本文档不转载其正文，仅记录引用关系、设计谱系与三系统对照。
+    </div>
+
+    <h2>上游来源</h2>
+    <p>《HUMAN API — 人类接口规范》是一个独立的外部项目，以工程规范文体描述"人类"这一系统：有限算力、有限注意力、多个互相冲突的目标、以及外部状态与内部状态并不保证一致。</p>
+    <table>
+      <tr><th>项目</th><th>内容</th></tr>
+      <tr><td>地址</td><td><code>https://human.ok.kimi.link/#/readme</code></td></tr>
+      <tr><td>性质</td><td>外部独立项目，非本项目所属，亦与本项目无隶属关系</td></tr>
+      <tr><td>结构特征</td><td>PART 分段 + 章节号 + 规范强度用语 + 修订历史 + 附录 H 生命周期</td></tr>
+      <tr><td>核心手法</td><td>用系统语言描述生物与社会事实，并通过术语的"中性化"暴露其荒谬</td></tr>
+      <tr><td>本项目的关系</td><td>受其文体启发，独立撰写变体；正文为原创，未复制上游文字</td></tr>
+    </table>
+    <blockquote>引用声明：上游文档的著作权属于其作者。本项目仅以链接方式指向上游，不转载、不改写其正文。若上游作者希望调整此处表述，可通过项目文档中的联系方式提出。</blockquote>
+
+    <h2>设计谱系</h2>
+    <div class="sys-map"><pre>HUMAN API（上游 · 外部）
+  │  文体与约定：规范强度、不可 Cast 关系、Power Check、修订历史
+  │
+  ├── DOG API（本项目的正典条目）
+  │     继承：规范文体 + 术语体系
+  │     改造：对象从"有限智能的人"换成"高带宽、全量授权的犬"
+  │     追加：实测硬件参数、运维排程、喂食接口、第三方互操作
+  │
+  └── CAT API（本项目的对抗条目）
+        继承：同上
+        改造：把"服务端主导"推到极端 —— 文档本身都需要审批
+        追加：极简附录，并说明为何无法补齐</pre></div>
+
+    <h2>三方对照</h2>
+    <table>
+      <tr><th>维度</th><th>HUMAN</th><th>DOG</th><th>CAT</th></tr>
+      <tr><td>默认部署</td><td>本地，不可云端迁移</td><td>本地，依赖维护者的情绪环境</td><td>本地，且部署范围由它自己宣布</td></tr>
+      <tr><td>系统目标</td><td>多个互相冲突，无全局调度器</td><td>收敛为"让维护者高兴"，优先级最高</td><td>收敛为"一切按我的方式进行"，不接受覆盖</td></tr>
+      <tr><td>外部输出可信度</td><td>可能显示 <code>200 OK</code> 而内部已过载</td><td>与内部状态一致，不具备撒谎功能</td><td>不保证一致，且不认为这构成问题</td></tr>
+      <tr><td>权限模型</td><td>复杂、隐晦、可临时撤销</td><td>无。全量授权，不可撤销</td><td>极严。授权漫长，但一旦生效终身有效</td></tr>
+      <tr><td>错误码方向</td><td>异常多来自其内部状态</td><td>异常多来自维护者（它是超发的）</td><td>异常多来自请求方（你是被拒绝的）</td></tr>
+      <tr><td>文档完整度</td><td>覆盖率声明为 Incomplete</td><td>27 章 + 10 附录，附公开信源</td><td>9 章 + 4 附录；其余因审批未通过</td></tr>
+      <tr><td>客服</td><td>没有统一客服，建议联系朋友、家人、医生</td><td>没有客服，因为它认为问题都已解决</td><td>不设投诉入口；唯一有效渠道是"不要催促"</td></tr>
+    </table>
+
+    <h2>文体约定（三系统通用）</h2>
+    <pre>MUST / SHOULD / MAY        规范强度，含义同 RFC 2119
+=  / ≈  / ->               定义 / 结构类比 / 映射方向
+!=                         禁止自动 Cast 的关系
+POWER CHECK                谁定义规则、谁承担适配成本、能否拒绝
+Appendix H                 生命周期 Changelog，非文档版本</pre>
+    <p>上述约定在本项目的三个文档中保持一致，以便跨文档对照阅读。具体的术语展开见<a href="../reference/glossary.html">术语表</a>，错误码对照见<a href="../reference/errors.html">错误码</a>。</p>
+
+    <hr class="divider">
+    <div class="end-note">上游提供了这套文体；本项目只负责把镜头对准另外两种生物。</div>
+  </main>
+</div>
+
+<script src="../assets/js/render.js"></script>
+<script>SpecSite.mountChrome({ root: "../", active: "human" });</script>
+
+</body>
+</html>

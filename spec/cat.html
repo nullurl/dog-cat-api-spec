@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAT API — 猫猫接口规范 | API SPEC 项目</title>
+<meta name="description" content="同为自治系统的猫猫接口规范：全 Server-driven 架构、不接受覆盖的根目标、以及一份单方面起草的服务合同。">
+<link rel="stylesheet" href="../assets/css/spec.css">
+</head>
+<body>
+
+<div class="layout">
+  <aside id="sidebar"></aside>
+  <main id="content"></main>
+</div>
+
+<script src="../assets/js/data-cat.js"></script>
+<script src="../assets/js/appendices.js"></script>
+<script src="../assets/js/render.js"></script>
+<script>
+  SpecSite.render({
+    root: "../",
+    active: "cat",
+    data: window.CAT_DOC,
+    appendices: window.CAT_APPENDICES,
+    heading: "CAT API — 猫猫接口规范",
+    sideSubtitle: "v0.3.0 · 9 章 + 4 附录（部分遭否决）",
+    endNote: "本文档随时可能被单方面废弃。本文档的存在本身已构成对系统主权的潜在冒犯。"
+  });
+</script>
+
+</body>
+</html>
