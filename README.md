@@ -7,10 +7,11 @@
 
 一套静态站点 + 参考客户端，内容是一份"伪技术规范"。文体是故意的：把生物写成系统之后，那些我们习以为常的事会显出原来的形状。
 
-- **DOG API** —— 34 章 + 附录 A–R。嗅觉阵列全双工、摇尾的方向性编码、地磁对齐、全天行为预算、生理基线、就医标准场景、量化接口定义、表情接口定义、外设总线、HUMAN 互操作。
+- **DOG API** —— 35 章 + 附录 A–R，正文并入 5 个 PART、节号写作 `§X.Y`。嗅觉阵列全双工、摇尾的方向性编码、地磁对齐、全天行为预算、生理基线、就医标准场景、量化接口定义、表情接口定义、外设总线、HUMAN 互操作，以及 §5.3《领养与授权》。
 - **CAT API** —— 9 章 + 4 附录（其余因审批未通过）。全 Server-driven 架构、不接受覆盖的根目标、陷阱式接口。
 - **HUMAN API** —— 上游引用与三方对照。**不转载上游正文**，仅记录引用关系与差异。
-- **参考页** —— 速查卡、生理指标、错误码对照、术语表。
+- **参考页** —— 速查卡、生理指标、错误码对照、术语表、口吻与文体、一只狗的生活意见、规范 ID 登记表。
+- **领养** —— 装一次技能即完成领养：拿到一张由四行元组确定性派生的 KEY（狗牌，**不是通行证** —— 本系统不返回 `401`），同一个摘要还会派发一个名字。安装包在 `skill/`，对外只有一条命令。
 - **量化方案** —— 计算内核 + 14 个标准场景 + 交互式评估器。每个参数带单位、取值范围、采样频率、报警阈值与来源等级。
 - **表情引擎** —— 13 维参数向量 + 14 个可观测状态，离线渲染成 24×24 像素 SVG。零依赖、零网络、逐像素确定性。
 - **外设总线** —— 14 类外设（球 / 飞盘 / 拔河绳 / 嗅闻垫 / 漏食器 / 啃咬物 / 逗猫棒式竿 …）＋ 13 道安全门槛＋ 33 种失效模式。含一条硬性序列闭合规则，与一条明确的整类弃用。
@@ -35,25 +36,33 @@ python3 -m http.server 8000
 
 ```
 .
-├── index.html                    项目首页
+├── index.html                    项目首页（含领养组件）
+├── versions.html                 历史版本索引（修订序列 / 版本轴 / 存档入口）
 ├── spec/
-│   ├── dog.html                  DOG API（34 章 + 附录 A–R）
+│   ├── dog.html                  DOG API（35 章 + 附录 A–R，§X.Y）
 │   ├── cat.html                  CAT API（9 章 + 4 附录）
 │   ├── human.html                HUMAN API 引用与三方对照
 │   ├── openapi.yaml              OpenAPI 3.1 结构描述
-│   └── quantified-api.yaml       量化接口描述（§29 的 10 个端点）
+│   ├── quantified-api.yaml       量化接口描述（§4.5 的 10 个端点）
+│   └── norm-ids.json             规范 ID 注册表（机器可读，由脚本生成）
 ├── reference/
 │   ├── cheatsheet.html           速查卡（可打印）
 │   ├── errors.html               错误码对照（13 码 × 3 系统）
-│   ├── glossary.html             术语表与公共约定
-│   └── vitals.html               生理指标速查（可打印）
+│   ├── glossary.html             术语表与公共约定（含引用与版本）
+│   ├── vitals.html               生理指标速查（可打印）
+│   ├── voice.html                口吻与文体（双声部模型 + 一票否决清单）
+│   ├── opinions.html             一只狗的生活意见（当事人声部，32 条）
+│   └── norm-ids.html             规范 ID 登记表（由脚本生成）
 ├── tools/
 │   ├── quantifier.html           交互式量化评估器（调用引擎算真数）
 │   ├── expression.html           表情画廊 + 参数台 + 混合台（调用引擎渲染）
 │   ├── charts.html               图表图鉴（19 张手写 SVG）
 │   ├── peripherals.html          外设控制台（调用引擎算门槛与磨损）
+│   ├── expression-sheet.html     表情联系表（14 帧平铺，由 --sheet 生成）
+│   ├── adoption.html             领养入口（命令 / 三态 / KEY 与名字）
 │   ├── dog-expression.js         表情命令行（svg / ascii / json / snippet / sheet）
-│   └── sync-params.js            由引擎注册表反向同步附录 P 与各文档计数
+│   ├── sync-params.js            由引擎注册表反向同步附录 P 与各文档计数
+│   └── sync-norm-ids.js          由数据模块反向生成规范 ID 登记表
 ├── sdk/
 │   ├── dog-api-client.js         参考客户端（DogClient / CatClient，含量化端点）
 │   ├── demo.html                 交互式接口控制台
@@ -70,15 +79,24 @@ python3 -m http.server 8000
 │       ├── charts-dog.js         图表渲染引擎（19 个图型 → 手写 SVG，内联 Mono 令牌）
 │       ├── peripherals.js        外设内核（14 类 / 13 门槛 / 序列闭合 / 磨损预测）
 │       ├── scenarios.js          标准场景库（D 日常 / M 医疗 / E 应急，14 个）
-│       └── render.js             共享渲染器（导航 / 目录 / 正文）
+│       ├── adoption-key.js       领养 KEY 与领养名的派生内核（纯函数）
+│       ├── adoption-widget.js    首页领养组件（命令 / 三态 / KEY / 名字）
+│       └── render.js             共享渲染器（导航 / PART 分组 / §X.Y / 正文）
 ├── docs/
 │   ├── CHANGELOG.md              修订历史
 │   ├── CONTRIBUTING.md           贡献指南
 │   ├── quantification.md         量化模型说明（来源等级 / 公式 / 评分）
 │   ├── expression.md             像素表情渲染说明（几何 / 体积 / 混合语义）
+│   ├── expression-geometry.md     表情几何踩坑记录（改几何前先读）
+│   ├── expression-sheet.html     跳转页 → tools/expression-sheet.html
 │   └── migration-from-human-api.md  从 HUMAN API 迁移
+├── skill/                        领养技能包（发布物：curl …/skill/install.sh | sh）
+│   ├── SKILL.md                  技能说明（安装即授权）
+│   ├── dog_adopt.py              命令行实现（与 adoption-key.js 同一算法）
+│   └── install.sh                安装包：取件 / 领养 / 复算 / 卸载
 └── legacy/
-    └── api-spec-variants.html    最早的单文件版本（自包含，保留存档）
+    ├── api-spec-variants.html    最早的单文件版本（自包含，冻结存档）
+    └── README.md                 存档说明（为什么它不参与编号校验）
 ```
 
 ## 内容架构
@@ -89,6 +107,11 @@ python3 -m http.server 8000
 - `assets/js/appendices.js` —— 附录：术语表、品种档案、SLA、错误码全表、迁移指南、值班手册、隐私审计、问题清单、SDK 指引、支持渠道。新增附录只需在数组里追加一个对象，**导航与编号会自动生成**。
 
 `render.js` 负责注入顶部导航、侧栏目录（编号自动生成，附录用 A/B/C 标号）、正文与滚动高亮。
+
+**DOG 正文分 5 个 PART**，节号写作 `§X.Y`（PART 序号 . 组内序号），由 `render.js` 按数据里的 `part` 字段
+在运行时生成 —— 所以标号是**位置**，不是身份。**跨版本引用请用规范 ID**（章节的 `id`，写作 `DOG-<id>`），
+登记表在 `reference/norm-ids.html`，机器可读版本在 `spec/norm-ids.json`。
+本站挂着两套编号：DOG 用 `§X.Y`，CAT 仍用两位列号 `00`–`08`，**不可互相套用**。
 
 ## 量化方案
 
@@ -190,7 +213,7 @@ open tools/charts.html
 
 - `assets/js/peripherals.js` —— 外设内核。`14` 个设备类 · `6` 种角色 · `5` 阶段捕猎序列 · `13` 道门槛 · `33` 种失效模式 · `15` 条来源。
 - `tools/peripherals.html` —— 外设控制台。左侧填档案与清单，右侧实时出结论；页面上每一个数字都来自内核。
-- §31《外设总线》 —— 正文（协议、判定规则、端点定义）。
+- §4.7《外设总线》 —— 正文（协议、判定规则、端点定义）。
 - 附录 R《外设目录与安全门槛》 —— 目录表、33 种失效模式逐条成因、13 道门槛依据、可打印核对表。
 
 三条设计决定，全部写在页面上：
@@ -206,7 +229,7 @@ open tools/charts.html
 node -e 'require("./assets/js/quantify.js"); var P=require("./assets/js/peripherals.js"); console.log(P.selfTest());'
 ```
 
-两条短路沿用 §29 的既有规则，不新造：**热风险硬停**（气温 ≥32 ℃ 或 HRI ≥10 时户外外设全部挂起）与**分诊短路**（`P0` / `P1` 时所有外设端点返回 `451` —— 先去医院，别挑玩具）。
+两条短路沿用 §4.5 的既有规则，不新造：**热风险硬停**（气温 ≥32 ℃ 或 HRI ≥10 时户外外设全部挂起）与**分诊短路**（`P0` / `P1` 时所有外设端点返回 `451` —— 先去医院，别挑玩具）。
 
 ## 信源
 
@@ -236,7 +259,7 @@ node -e 'require("./assets/js/quantify.js"); var P=require("./assets/js/peripher
   下方单独标注的其他授权只适用于其各自列出的第三方内容，不适用于本项目自身。
 - 本项目是文体练习与科普杂糅的产物，**不是饲养指南，也不提供医疗建议**。唯一例外是速查卡里那三条 MUST，它们是认真的。
 - 所有评分为**偏差提示**，不是诊断。复合指标（DNS / HRI / VSI）不得用于横向比较不同的狗，只用于同一只狗的纵向趋势。
-- 出现 §28 分诊矩阵中的 P0 / P1 条目时，不要先算分 —— 直接联系执业兽医。
+- 出现 §4.4 分诊矩阵中的 P0 / P1 条目时，不要先算分 —— 直接联系执业兽医。
 - `sdk/` 下所有代码均为行为模拟，不发起网络请求，不收集数据。
 - `tools/expression.html` 与 `tools/dog-expression.js` 生成的 SVG 是**观测的编码，不是照片或插画**，请不要当作素材库使用。
   其中 `SICK` 状态的像素与健康基线完全一致 —— 这不是 bug，是那份规范里最严肃的一条。

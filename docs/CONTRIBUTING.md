@@ -135,6 +135,73 @@ node -e 'require("./assets/js/quantify.js"); var P=require("./assets/js/peripher
 
 新增或修改类别后，记得同步**附录 R 的目录表**（手工维护，14 行）与控制台里那张数据驱动的注册表 —— 后者的数据源就是内核，不用改。
 
+**11. 章节锚点即规范 ID，一经分配不得更改。**
+`assets/js/data-dog.js` 与 `assets/js/appendices.js` 里每个条目的 `id` 就是它的规范 ID（写作 `DOG-<id>`）。
+**可以改标题、改内容、移动位置，但不要改已有的 `id`** —— 锚点一改，所有跨版本引用同时断掉。
+测试：改动之后跑一次生成脚本，它会把「上次登记过、这次不见了」的 ID 逐条列出来并以非零码退出。
+
+```bash
+node tools/sync-norm-ids.js   # 改过章节 id / 标题，或增删条目之后
+```
+
+引用别的章节时 SHOULD 用规范 ID，MUST NOT 只用节号 —— 节号按数组顺序在运行时生成，插入或删除会
+让其后的编号整体平移。确实需要写节号时，SHOULD 同时写出规范 ID（例：`§4.7 外设总线（DOG-peripherals）`）。
+登记表见 `reference/norm-ids.html`，理由见该页开头。
+
+**本仓库挂着两套正文编号**，这是它和 DOG 子集仓库最重要的一处差别：DOG API 用 `§X.Y`（附录 A–R），
+CAT API 仍用两位列号 `00`–`08`（附录 A–D）。两套数字可以完全一样而指向不同章节，**不可互相套用**，
+引用时请写明是哪个系统的节号。另外 `legacy/` 里的 `§NN` 记的是 0.8.0 之前的编号，
+与现行体系没有对应关系 —— 那个目录**不参与节号校验**，理由见 `legacy/README.md`。
+
+**12. 修订号只有一处。**
+当前文档修订号定义在 `assets/js/render.js` 的 `VERSION`，通过 `SpecSite.VERSION` 暴露给页面。
+**不要在页面里硬编码版本号**（`spec/dog.html` 的侧栏副标题曾经写死 `v0.12`，换一版就成了错的）。
+发版时改三处：`render.js` 的 `VERSION`、`docs/CHANGELOG.md` 的新条目、`versions.html` 的修订序列表。
+
+**13. 改文字之前先读《口吻与文体》。**
+这套文档只有两个声部，且在 `reference/voice.html` 里有明确规定：
+**规范编写组**（第三人称，事实在前，带出处）与**当事人**（第一人称，没有依据只有结论）。
+当事人声部**只**以「本机：」开头的引用块出现 —— 不要在正文段落里写成第一人称。
+该页另有一份**一票否决**清单（感叹号、自评有趣、解释性连词、形容词化的评价、饲养建议、
+把行为写成"爱"），出现即回退。`reference/opinions.html` 是当事人声部的完整作品，
+新增条目请加在那里，**不要**往正文各章散落。
+
+**14. 领养 KEY 与领养名的两份实现必须同步改。**
+`assets/js/adoption-key.js`（页面用）与 `skill/dog_adopt.py`（命令行用）是同一份规范的两处实现 ——
+**包括名字表与犬种表**，那两张表也是规范（顺序有意义，见 §5.3《领养名》）。
+判据是 §5.3 公布的**固定测试向量**（4 组 KEY + 4 组名字）。改任何一边之后跑：
+
+```bash
+python3 skill/dog_adopt.py --selftest
+node --check assets/js/adoption-key.js
+```
+
+**三条红线**：KEY 的派生规则 MUST NOT 引入小写折叠或 Unicode 归一化（会让同一个元组在两个实现里
+算出两个 KEY，且不会报错）；MUST NOT 把名字放进元组（元组是 KEY 的全部输入，塞进去会让所有已发的牌作废）；
+MUST NOT 把证书写进技能目录（卸载技能不该删掉用户的证书）。
+
+**本仓库的站点地址与出厂元组是两件事，不要一起改。** 站点地址常量（`skill/install.sh` 的 `BASE`
+默认值、`assets/js/adoption-widget.js` 的 `BASE`）在两个仓库各指自己那一份发布物；
+而出厂元组与 §5.3 的测试向量**逐字相同**（`example@dog-api-spec`），改了它，
+首页那条「KEY = 向量 1」的自检立刻失败 —— 那不是文案问题，是派生链断了。
+
+**15. 界面上的领养内容只有一份事实源。**
+安装命令的**生成函数**（`installCmd()`）、授权三态的文案、出厂元组，只在
+`assets/js/adoption-widget.js` 里定义一次；首页的 `#adoption-widget` 与 `tools/adoption.html`
+是它的两个消费者 —— 后者直接调前者的函数，不许抄第二份字符串。
+命令的**执行端**是 `skill/install.sh`，两者要一致：改了参数名，`skill/SKILL.md`、§5.3 的命令块、
+README 的那一段必须一起改，抄错就装不上。
+组件默认停在出厂元组上，所以首页一打开就实测了一次「元组相同 → KEY 相同」，并与 §5.3 的测试向量 1
+逐字节比对；改过组件之后，那条自检**必须仍然显示一致**。
+
+**16. 安装包只对外露一条命令。**
+`skill/install.sh` 是唯一的安装入口：取件、领养、复算、卸载都在它内部。
+两条硬约束：**只在 `/dev/tty` 上提问**（`curl … | sh` 那条路上 stdin 是脚本本身，
+在 stdin 上读一行会把后面的命令一起吃掉）；**卸载要有护栏**（目标目录里必须存在带标记的
+`SKILL.md` 才允许删，且证书在技能目录之外、卸载 MUST NOT 碰它）。
+改过之后跑 `sh -n skill/install.sh`，并确认夹具第 ② 层的「安装包」一节仍然全绿 ——
+那一节跑的是**已发布**的那一份。
+
 ## 提交方式
 
 1. Fork / 建分支
@@ -145,8 +212,13 @@ node -e 'require("./assets/js/quantify.js"); var P=require("./assets/js/peripher
 # 若改过 quantify.js 的参数注册表，先同步下游
 node tools/sync-params.js
 
+# 若改过章节 id / 标题，或增删了章节与附录，重新生成规范 ID 登记表
+node tools/sync-norm-ids.js
+
 # JS 语法（无构建步骤，语法错误会直接让页面白屏）
 node --check assets/js/render.js
+node --check assets/js/adoption-key.js
+node --check assets/js/adoption-widget.js
 node --check assets/js/appendices.js
 node --check assets/js/data-dog.js
 node --check assets/js/data-cat.js
@@ -157,14 +229,28 @@ node --check assets/js/charts-dog.js
 node --check assets/js/peripherals.js
 node --check sdk/dog-api-client.js
 node --check tools/sync-params.js
+node --check tools/sync-norm-ids.js
 node --check tools/dog-expression.js
 
 # 表情引擎断言（若改过 expression.js）
 node tools/dog-expression.js --selftest
 
+# 领养 KEY 与领养名自检（若改过 adoption-key.js / adoption-widget.js 或 skill/dog_adopt.py —— 见第 14、15 条）
+python3 skill/dog_adopt.py --selftest
+
+# 安装包语法与用法（发布物之一，不是页面；夹具第 ② 层的「安装包」一节也跑这两条）
+sh -n skill/install.sh
+sh skill/install.sh --help
+
 # 页面自检：直接用浏览器打开这些文件，确认导航、目录、正文均正常
-#   index.html  spec/dog.html  spec/cat.html  reference/cheatsheet.html
-#   tools/quantifier.html  tools/expression.html  tools/charts.html  tools/peripherals.html  sdk/demo.html
+#   index.html（含领养组件：命令块有内容、三态可切、KEY 显示 DOG-05NA-N160-…、自检显示一致）
+#   versions.html  spec/dog.html  spec/cat.html  spec/human.html
+#   reference/cheatsheet.html  reference/errors.html  reference/glossary.html
+#   reference/vitals.html  reference/voice.html  reference/opinions.html  reference/norm-ids.html
+#   tools/adoption.html  spec/dog.html#adoption（§5.3）
+#   tools/quantifier.html  tools/expression.html  tools/expression-sheet.html
+#   tools/charts.html  tools/peripherals.html  sdk/demo.html
+#   legacy/api-spec-variants.html（自包含，应能离线独立渲染）
 #
 # charts.html 额外自带一条自检：标题会变成「… · mounted/total」。
 # 两者不等，或页脚出现「自检未通过」，就说明有图表没挂上或页面漏了声明。
@@ -172,6 +258,16 @@ node tools/dog-expression.js --selftest
 # peripherals.html 也自带一条：标题会变成「… · 14 类 / 13 门槛 / 可承接 60%」。
 # 三个数来自内核的 selfTest()，对不上说明内核或页面被改坏了。
 ```
+
+> **别手搓下面这三条 —— 用夹具，它会自己探测两种目录布局。**
+> 夹具在 `.workbuddy/skills/spec-repo-smoke/`（不随站点发布），三个脚本都要显式传期望值：
+>
+> ```bash
+> S=<夹具目录>
+> python3 $S/validate-static.py <仓库目录> '{"DOG_DOC":true,"dogSections":35,"CAT_DOC":true,"catSections":9,"DOG_APPENDICES":18,"CAT_APPENDICES":4}'
+> node    $S/smoke-repo.js     <仓库目录> dogcat      # DOM 桩里实跑渲染与领养链路
+> $S/live-replay.sh nullurl/dog-cat-api-spec dogcat   # 抓线上真实文件回放
+> ```
 
 4. 提交说明写清：改了哪一章 / 新增了什么 / 信源是什么
 

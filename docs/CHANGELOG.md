@@ -5,6 +5,82 @@
 
 ---
 
+## [0.18] — 归并 DOG 内容线（0.13–0.18）
+
+**Change class:** Merge
+
+**背景**
+本仓库与 DOG API 子集仓库（`dog-api-spec`）在 0.12 分叉。子集只保留 DOG 一个系统，
+随后沿 0.13–0.17 独立往前走了五版（目录重排、规范 ID、口吻规范、领养与授权、领养组件），
+而本仓库停在 0.12：正文 34 章、两位列号、没有规范 ID 登记表、没有口吻规范、没有领养链路 ——
+**只有 CAT API 与 HUMAN 对照页在本仓库这边**。
+
+这一版把 DOG 内容线并回本仓库，并把「哪些采纳、哪些不采纳」写明。**这不是一次复制，
+本仓库有四处内容必须保留自己的写法**（见下）。
+
+**并入（DOG 侧 0.13–0.18）**
+
+| DOG 侧版本 | 内容 | 本仓库的处理 |
+| --- | --- | --- |
+| 0.13 | 四层目录重排 | **只采纳两项**：`docs/expression-geometry.md` 从被 `.gitignore` 挡住的路径提升为仓库内文档；表情联系表由 `docs/` 移到 `tools/`（旧路径留跳转页）。**目录布局仍为本仓库自己的形态**（`assets/js/` + `tools/`） |
+| 0.14 | 规范 ID + PART + `§X.Y` | 全部采纳。新增 `reference/norm-ids.html`、`spec/norm-ids.json`、`tools/sync-norm-ids.js`、`versions.html` |
+| 0.15 | 双声部口吻 | 全部采纳。新增 `reference/voice.html`、`reference/opinions.html`；§3.1 与 §3.9 各补一处「本机：」自述 |
+| 0.16 | §5.3《领养与授权》 | 全部采纳 |
+| 0.17 | 领养组件（首页） | 全部采纳 |
+| 0.18 | 领养收成装技能 + 领养名 | 全部采纳。新增 `skill/`（安装包 / 技能说明 / 命令行实现） |
+
+**本仓库保留的差异**
+
+这些不是遗漏，是「本仓库有 CAT / HUMAN、子集没有」的必然结果。子集版在泛化这些内容时
+去掉了跨文档指称，那些泛化**不得覆盖**本仓库版本：
+
+| 位置 | 本仓库写法 | 子集写法 | 处理 |
+| --- | --- | --- | --- |
+| 附录 D 错误码全表 | 三列：DOG 语义 / **CAT 语义** | 两列，只讲 DOG | 保留三列 |
+| 附录 E 迁移指南 | 从 **HUMAN API** 迁移到 DOG API | 从别的系统迁移 | 保留 HUMAN 版 |
+| 附录 J 支持与投诉 | 首段对比 **HUMAN API** 的客服缺失原因 | 泛化为「本系统」 | 保留对比 |
+| §3.9 章标题 | 第三方接口 / **HUMAN 互操作** | 第三方接口 / 与人类的互操作 | 保留 HUMAN 版 |
+| §5.2 修订历史 | 同上，表格里的那处标题引用 | 同上级 | 保留 |
+| §4.6 章内命令行路径 | `tools/dog-expression.js` | `scripts/expression.js` | 保留本仓库路径 |
+| `reference/errors.html` · `glossary.html` · `cheatsheet.html` · `sdk/demo.html` | 三系统对照（HUMAN / DOG / CAT） | 只讲 DOG | 全部保留 |
+
+**编号迁移**
+DOG 正文节号由两位列号改为 `§X.Y`，映射：`00`→`§1.1` … `33`→`§5.2`，新增 `34`→`§5.3`。
+**全仓库 97 处引用随之改写**（附录 25 处 + 其余 18 个文件 72 处）。
+排除在改写之外的三处：`docs/CHANGELOG.md`（历史条目记录的是当时的编号）、
+`legacy/`（0.8.0 之前的冻结件）、`assets/js/data-cat.js`（CAT 自己的编号）。
+**CAT API 与 HUMAN 页保持两位列号**：本站因此挂着两套正文编号，数字可以相同而指向不同章节。
+
+**新增**
+- 正文 §5.3《领养与授权》（DOG 34 → 35 章）；`reference/voice.html`、`reference/opinions.html`
+- `assets/js/adoption-key.js`、`assets/js/adoption-widget.js`、`tools/adoption.html`
+- `reference/norm-ids.html`、`spec/norm-ids.json`、`tools/sync-norm-ids.js`
+- `versions.html`、`legacy/README.md`
+- `skill/SKILL.md`、`skill/dog_adopt.py`、`skill/install.sh`
+- `docs/expression-geometry.md`、`tools/expression-sheet.html`（`docs/` 那份改为跳转页）
+- `assets/js/render.js` 增加 `VERSION`、PART 分组与 `§X.Y` 标号；`assets/css/spec.css` 增加 `.part-head`
+
+**修正**
+- 术语表删去一行把「生命周期 Changelog」记作 *Appendix H* 的过期标注。那是它在 **0.3.0** 时的位置，
+  那一章后来升为正文，标注却一直留着 —— 按当前数组位置，附录 H 是《已知问题清单》。
+  同类过期引用在 0.9.1 清过一次，这一行漏了。
+- `spec/dog.html` 的侧栏副标题不再写死版本号（原来写死 `v0.12 · 34 章 + 18 附录`），
+  改读 `SpecSite.VERSION` 与数据长度。
+- 术语表新增《引用与版本》一节：四个版本轴、规范 ID 与节号的区别、两套编号不可混用。
+
+**校验**
+- ① 21 个 HTML / 141 条本地链接 / 标签配平 / 197 处 `§` 引用全部指向存在的章节（CAT 域按 CAT 编号单独校验）
+- ② 渲染冒烟 **55 项**：DOG 35 章 + 18 附录 = 53 section、5 条 PART 分隔行、标号 `§1.1`…`§5.3` 无重复；
+  CAT 9 + 4 = 13 section（无 parts，走旧编号回退）；领养页测试向量 8/8；首页组件的 KEY 与向量 1 逐字节相等；
+  安装包语法与命令行自检
+- ③ 线上回放同套断言（推送后执行）
+
+**未改动**
+CAT API 与 HUMAN 对照页的正文、编号与页面形态；`legacy/api-spec-variants.html`；
+目录布局（仍为 `assets/js/` + `tools/`）。
+
+---
+
 ## [0.12] — Peripherals
 
 **Change class:** Hardware

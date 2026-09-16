@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API SPEC 项目 — 人类之外的两套接口规范</title>
-<meta name="description" content="以工程规范文体撰写的动物接口规范项目：DOG API（34 章、实测数据、运维手册、14 个标准场景、可计算的量化接口、一个能渲染 14 种像素表情的表情引擎，以及一条外设总线）、CAT API（对抗条目），以及速查卡、生理指标、错误码对照、术语表、量化评估器、表情渲染器、外设控制台与可运行 SDK。">
+<meta name="description" content="以工程规范文体撰写的动物接口规范项目：DOG API（35 章、52 条公开信源、实测数据、运维手册、14 个标准场景、可计算的量化接口、一个能渲染 14 种像素表情的表情引擎，以及一条外设总线）、CAT API（对抗条目），首页可领养（装一次技能，得一张来源标注与一个由元组派生的名字），附口吻规范、一只狗的生活意见、速查卡、生理指标、错误码对照、术语表、量化评估器、表情渲染器、外设控制台与可运行 SDK。">
 <link rel="stylesheet" href="assets/css/spec.css">
 <style>
   .stat-row { display: flex; gap: 26px; flex-wrap: wrap; margin: 26px 0 0; }
@@ -28,9 +28,10 @@
   <a class="btn ghost" href="tools/charts.html" style="margin-left:8px;">图表图鉴</a>
   <a class="btn ghost" href="tools/peripherals.html" style="margin-left:8px;">外设控制台</a>
   <a class="btn ghost" href="sdk/demo.html" style="margin-left:8px;">SDK 控制台</a>
+  <a class="btn ghost" href="#adoption" style="margin-left:8px;">领养（装技能）</a>
 
   <div class="stat-row">
-    <div class="stat"><div class="n">34</div><div class="l">DOG 正文章节</div></div>
+    <div class="stat"><div class="n">35</div><div class="l">DOG 正文章节</div></div>
     <div class="stat"><div class="n">18</div><div class="l">DOG 附录 （A–R）</div></div>
     <div class="stat"><div class="n">9 + 4</div><div class="l">CAT 章节 + 附录</div></div>
     <div class="stat"><div class="n">52</div><div class="l">公开信源条目</div></div>
@@ -48,7 +49,7 @@
     <div class="kicker">正典条目</div>
     <h3>DOG API — 狗狗接口规范</h3>
     <p>嗅觉阵列全双工、摇尾的方向性编码、地磁对齐、全天行为预算、生理基线、就医标准场景、外设总线，以及一套可计算的量化接口。</p>
-    <div class="foot">34 章 + 附录 A–R · 52 条公开信源</div>
+    <div class="foot">35 章 + 附录 A–R · 52 条公开信源</div>
   </a>
   <a class="card" href="spec/cat.html">
     <div class="kicker">对抗条目</div>
@@ -81,7 +82,7 @@
   <a class="card" href="spec/quantified-api.yaml">
     <div class="kicker">机器可读</div>
     <h3>量化接口描述</h3>
-    <p>把 §29 的 10 个量化端点写成 OpenAPI：派生指标、评分模型、分诊矩阵、排程生成，含 <code>451</code> / <code>422</code> 的短路语义。</p>
+    <p>把 §4.5 的 10 个量化端点写成 OpenAPI：派生指标、评分模型、分诊矩阵、排程生成，含 <code>451</code> / <code>422</code> 的短路语义。</p>
     <div class="foot">spec/quantified-api.yaml</div>
   </a>
   <a class="card" href="docs/quantification.md">
@@ -101,7 +102,7 @@
     <div class="foot">tools/expression.html · 引擎 assets/js/expression.js</div>
   </a>
   <a class="card" href="spec/dog.html#expression">
-    <div class="kicker">§30 正文</div>
+    <div class="kicker">§4.6 正文</div>
     <h3>表情接口定义（EXPR v1）</h3>
     <p>为什么尾巴在响应头里而不是响应体里、为什么写操作一律 405、为什么「愧疚脸」的置信度只有 0.22。</p>
     <div class="foot">13 维向量 · 14 状态 · 7 端点 · 9 状态码</div>
@@ -112,11 +113,11 @@
     <p>超椭圆栅格化、反向采样的旋转、行程合并成单条 path，以及 24px 下相邻特征互相吞掉的全部案例。</p>
     <div class="foot">docs/expression.md · 附命令行用法</div>
   </a>
-  <a class="card" href="docs/expression-sheet.html">
+  <a class="card" href="tools/expression-sheet.html">
     <div class="kicker">全在这页</div>
     <h3>表情联系表</h3>
     <p>14 帧一次性平铺，每格附三条响应头与「它与基线差在哪」。带橙边的 <code>SICK</code> 没有专属参数 —— 那不是漏了。</p>
-    <div class="foot">docs/expression-sheet.html · 由 --sheet 生成</div>
+    <div class="foot">tools/expression-sheet.html · 由 --sheet 生成</div>
   </a>
 </div>
 
@@ -151,7 +152,7 @@
     <div class="foot">tools/peripherals.html · 引擎 assets/js/peripherals.js</div>
   </a>
   <a class="card" href="spec/dog.html#peripherals">
-    <div class="kicker">§31 正文</div>
+    <div class="kicker">§4.7 正文</div>
     <h3>外设总线（Peripheral Bus）</h3>
     <p>一套不接受参数调优的系统，唯一可插拔的部分是它的外设。为什么玩具要按捕猎序列分类而不是按材质、为什么激光笔是整类弃用而不是降低推荐等级、以及那 60% 的上限是怎么被算出来的。</p>
     <div class="foot">14 类 · 6 种角色 · 5 阶段序列 · 13 道门槛</div>
@@ -161,6 +162,35 @@
     <h3>外设目录与安全门槛</h3>
     <p>14 类设备的目录表（含来源等级与判定默认值）、33 种失效模式的逐条成因、13 道门槛的依据与放宽条款，以及一份可打印的选购与完整性核对表。</p>
     <div class="foot">附录 R · 33 种失效模式</div>
+  </a>
+</div>
+
+<div class="section-title" id="adoption" style="scroll-margin-top:78px;">领养与授权</div>
+<!-- 领养组件：一条安装命令（含你自己的元组）/ 授权三态 / 装完会拿到的 KEY 与狗名。
+     骨架由 assets/js/adoption-widget.js 覆盖渲染；以下文字是无脚本时的回退 —— 少一段交互，不少一条路径。 -->
+<div id="adoption-widget" data-root="">
+  <p style="font-size:14px;color:var(--muted);line-height:1.9;">
+    领养只有一种形态：装技能。一条命令装完 ——
+    <code style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;">curl -fsSL https://nullurl.github.io/dog-cat-api-spec/skill/install.sh | sh -s -- --adopter "你@这台机器"</code>
+    （这条命令需要 JavaScript 才能按你填的元组生成）。也可以打开
+    <a href="tools/adoption.html">领养入口</a>，或读
+    <a href="spec/dog.html#adoption">§5.3《领养与授权》</a>。
+  </p>
+</div>
+
+<div class="section-title">口吻</div>
+<div class="grid">
+  <a class="card" href="reference/voice.html">
+    <div class="kicker">定义口径</div>
+    <h3>口吻与文体</h3>
+    <p>这套文档有两个人说话：规范编写组给事实与出处，当事人给结论与立场。分清谁在说话，是读懂它的前提 —— 含当事人声部的三条装置、四条硬约束，与一份出现即回退的清单。</p>
+    <div class="foot">REFERENCE / VOICE · 含正反示例</div>
+  </a>
+  <a class="card" href="reference/opinions.html">
+    <div class="kicker">第二声部</div>
+    <h3>一只狗的生活意见</h3>
+    <p>32 条意见分五组：关于人、关于自己、关于食物、关于时间，以及关于这份规范。本页没有一句有出处 —— 因为它自己就是出处。</p>
+    <div class="foot">REFERENCE / OPINIONS · 32 条</div>
   </a>
 </div>
 
@@ -203,8 +233,14 @@
   <a class="card" href="docs/CHANGELOG.md">
     <div class="kicker">维护记录</div>
     <h3>变更日志与贡献指南</h3>
-    <p>0.1 → 0.12 的修订历史，以及如何为本项目提交新附录（CAT 侧的流程略有不同）。</p>
+    <p>0.1 → 0.18 的修订历史，以及如何为本项目提交新附录（CAT 侧的流程略有不同）。</p>
     <div class="foot">docs/</div>
+  </a>
+  <a class="card" href="versions.html">
+    <div class="kicker">修订序列</div>
+    <h3>历史版本</h3>
+    <p>每个版本做了什么、三个互不相干的版本轴，以及 0.8.0 之前单文件形态的存档入口。</p>
+    <div class="foot">versions.html · 含 legacy/</div>
   </a>
 </div>
 
@@ -214,6 +250,10 @@
     <p style="font-size:14.5px;line-height:1.9;">
       它表面上是一份玩笑文档，实际上每一章的参数都有出处 —— 《公开信源》一章列了 52 条完整来源，包含期刊、DOI 与临床指南编号。
       文体是故意的：把"狗"写成"系统"之后，那些我们习以为常的事就显出原来的形状。
+      这套写法不靠感觉，规则写在 <a href="reference/voice.html">《口吻与文体》</a> 里；
+      而它的另一半声音 —— 由它自己说的那部分 —— 在 <a href="reference/opinions.html">《一只狗的生活意见》</a>。
+      至于你凭什么持有这份副本：本系统不返回 <code>401</code>，所以那张牌不是通行证，是来源标注 ——
+      规则见 <a href="spec/dog.html#adoption">§5.3《领养与授权》</a>，入口就是本页的 <a href="#adoption">领养组件</a> —— 装一次技能，会算出一张牌与一个名字：牌登记来源，名字由同一份摘要派发，不进牌里。
       比如：某个系统在疼痛时仍会摇尾巴；某个系统会把你回家的脚步声写入永久存储；
       以及，某个系统为了和你说上话，专门长出了一块新的肌肉。
     </p>
@@ -234,6 +274,8 @@
   API SPEC 项目 · 静态站点，无构建步骤，无外部依赖 · 打开 index.html 即可阅读
 </div>
 
+<script src="assets/js/adoption-key.js"></script>
+<script src="assets/js/adoption-widget.js"></script>
 <script src="assets/js/render.js"></script>
 <script>SpecSite.mountChrome({ root: "", active: "home" });</script>
 
