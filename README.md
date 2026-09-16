@@ -51,7 +51,7 @@ python3 -m http.server 8000
 │   ├── glossary.html             术语表与公共约定（含引用与版本）
 │   ├── vitals.html               生理指标速查（可打印）
 │   ├── voice.html                口吻与文体（双声部模型 + 一票否决清单）
-│   ├── opinions.html             一只狗的生活意见（当事人声部，32 条）
+│   ├── opinions.html             一只狗的生活意见（当事人声部，63 条）
 │   └── norm-ids.html             规范 ID 登记表（由脚本生成）
 ├── tools/
 │   ├── quantifier.html           交互式量化评估器（调用引擎算真数）
