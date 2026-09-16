@@ -69,11 +69,17 @@ DOG 正文节号由两位列号改为 `§X.Y`，映射：`00`→`§1.1` … `33`
 - 术语表新增《引用与版本》一节：四个版本轴、规范 ID 与节号的区别、两套编号不可混用。
 
 **校验**
-- ① 21 个 HTML / 141 条本地链接 / 标签配平 / 197 处 `§` 引用全部指向存在的章节（CAT 域按 CAT 编号单独校验）
+- ① 21 个 HTML / 141 条本地链接 / 标签配平 / 198 处 `§` 引用全部指向存在的章节（CAT 域按 CAT 编号单独校验）
 - ② 渲染冒烟 **55 项**：DOG 35 章 + 18 附录 = 53 section、5 条 PART 分隔行、标号 `§1.1`…`§5.3` 无重复；
   CAT 9 + 4 = 13 section（无 parts，走旧编号回退）；领养页测试向量 8/8；首页组件的 KEY 与向量 1 逐字节相等；
   安装包语法与命令行自检
-- ③ 线上回放同套断言（推送后执行）
+- ③ 线上回放同套断言 **55 项全通过**（抓 `nullurl.github.io/dog-cat-api-spec` 的真实文件；侧栏 53 条即
+  35 + 18，证明线上已是 0.18）。12 个新入口路径逐一抽查均 `200`
+- 两个生成器（`tools/sync-params.js` / `tools/sync-norm-ids.js`）重跑均**幂等**、零改动
+
+**推送**：`github.com` 传输停滞（`ls-remote` 46 s 零字节，等价阻断），改走 Git Data API 等价重建 ——
+41 个 blob + tree + commit **三级 SHA 逐级吻合**，远端 `main` = `8f6f7ab`，Pages 构建 `built`。
+`git status` 显示 `## main...origin/main`（无 ahead/behind）。
 
 **未改动**
 CAT API 与 HUMAN 对照页的正文、编号与页面形态；`legacy/api-spec-variants.html`；
