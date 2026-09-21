@@ -249,7 +249,7 @@ sh skill/install.sh --help
 #   reference/vitals.html  reference/voice.html  reference/opinions.html  reference/norm-ids.html
 #   tools/adoption.html  spec/dog.html#adoption（§5.3）
 #   tools/quantifier.html  tools/expression.html  tools/expression-sheet.html
-#   tools/charts.html  tools/peripherals.html  sdk/demo.html
+#   tools/charts.html  tools/peripherals.html  tools/cyber-walk.html  sdk/demo.html
 #   legacy/api-spec-variants.html（自包含，应能离线独立渲染）
 #
 # charts.html 额外自带一条自检：标题会变成「… · mounted/total」。
@@ -257,6 +257,9 @@ sh skill/install.sh --help
 #
 # peripherals.html 也自带一条：标题会变成「… · 14 类 / 13 门槛 / 可承接 60%」。
 # 三个数来自内核的 selfTest()，对不上说明内核或页面被改坏了。
+#
+# cyber-walk.html 也自带一条：标题会变成「… · 12/12 自检」。
+# 那 12 项来自页面的 selftest()，任一项不符就会在页面自检区标红。
 ```
 
 > **别手搓下面这三条 —— 用夹具，它会自己探测两种目录布局。**
@@ -267,6 +270,9 @@ sh skill/install.sh --help
 > python3 $S/validate-static.py <仓库目录> '{"DOG_DOC":true,"dogSections":35,"CAT_DOC":true,"catSections":9,"DOG_APPENDICES":18,"CAT_APPENDICES":4}'
 > node    $S/smoke-repo.js     <仓库目录> dogcat      # DOM 桩里实跑渲染与领养链路
 > $S/live-replay.sh nullurl/dog-cat-api-spec dogcat   # 抓线上真实文件回放
+
+> 带内联逻辑的页面（领养、赛博遛狗）要把管线函数挂到 `window.<名字>` 上，夹具才能在 DOM 桩里实跑；
+> 同时把文件加进 `live-replay.sh` 的抓取清单 —— 漏抓不是跳过，是直接判失败。
 > ```
 
 4. 提交说明写清：改了哪一章 / 新增了什么 / 信源是什么
