@@ -60,7 +60,8 @@ python3 -m http.server 8000
 │   ├── peripherals.html          外设控制台（调用引擎算门槛与磨损）
 │   ├── expression-sheet.html     表情联系表（14 帧平铺，由 --sheet 生成）
 │   ├── cyber-walk.html           赛博遛狗（上传图片 → 网格 → 部件 → 两种 SVG 出口）
-│   ├── astraflow.html            星图接入（全站唯一出网页：清单 / 对话 / 生图 / 交接给遛狗）
+│   ├── astraflow.html            星图接入（会出网：清单 / 对话 / 生图 / 交接给遛狗）
+│   ├── crosspet.html             跨站串门（会出网：原生 WebSocket 直连公共频道）
 │   ├── adoption.html             领养入口（命令 / 三态 / KEY 与名字）
 │   ├── dog-expression.js         表情命令行（svg / ascii / json / snippet / sheet）
 │   ├── sync-params.js            由引擎注册表反向同步附录 P 与各文档计数
@@ -83,6 +84,7 @@ python3 -m http.server 8000
 │       ├── scenarios.js          标准场景库（D 日常 / M 医疗 / E 应急，14 个）
 │       ├── adoption-key.js       领养 KEY 与领养名的派生内核（纯函数）
 │       ├── adoption-widget.js    首页领养组件（命令 / 三态 / KEY / 名字）
+│       ├── crosspet-local.js     CrossPet 本地客户端（原生 WebSocket，零依赖）
 │       └── render.js             共享渲染器（导航 / PART 分组 / §X.Y / 正文）
 ├── docs/
 │   ├── CHANGELOG.md              修订历史
