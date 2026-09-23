@@ -157,6 +157,8 @@ CAT API 仍用两位列号 `00`–`08`（附录 A–D）。两套数字可以完
 当前文档修订号定义在 `assets/js/render.js` 的 `VERSION`，通过 `SpecSite.VERSION` 暴露给页面。
 **不要在页面里硬编码版本号**（`spec/dog.html` 的侧栏副标题曾经写死 `v0.12`，换一版就成了错的）。
 发版时改三处：`render.js` 的 `VERSION`、`docs/CHANGELOG.md` 的新条目、`versions.html` 的修订序列表。
+另有一处**由校验拦下**：`assets/crosspet-credentials.json` 的 `specRevision` —— 它对外发布的是同一个号。
+漏改不会静默：冒烟夹具拿它与 `render.js` 的 `VERSION` 比对。
 
 **13. 改文字之前先读《口吻与文体》。**
 这套文档只有两个声部，且在 `reference/voice.html` 里有明确规定：
@@ -270,6 +272,10 @@ sh skill/install.sh --help
 # 其中 41 项来自 assets/js/crosspet-local.js 的 selftest()（端点拼装、Phoenix 帧、帧归类、
 # SVG 净化与定框、来客审查、重连退避、造型确定性、来源站透传），3 项是页面接线本身。
 # 全部是纯函数断言，一项都不发请求 —— 断网也照样出结论。
+#
+# 凭证清单 assets/crosspet-credentials.json 是 §3.10《接入凭证》的机器可读副本（频道、端点、做法、
+# 注意事项一次取全）。它与 assets/js/crosspet-local.js 的 DEFAULTS、以及正文里的那一节，
+# 三处的 url / key / 频道必须逐字一致 —— 夹具三处都查，改一处漏两处会直接报出来。
 ```
 
 > **别手搓下面这三条 —— 用夹具，它会自己探测两种目录布局。**
@@ -277,7 +283,7 @@ sh skill/install.sh --help
 >
 > ```bash
 > S=<夹具目录>
-> python3 $S/validate-static.py <仓库目录> '{"DOG_DOC":true,"dogSections":35,"CAT_DOC":true,"catSections":9,"DOG_APPENDICES":18,"CAT_APPENDICES":4}'
+> python3 $S/validate-static.py <仓库目录> '{"DOG_DOC":true,"dogSections":36,"CAT_DOC":true,"catSections":9,"DOG_APPENDICES":18,"CAT_APPENDICES":4}'
 > node    $S/smoke-repo.js     <仓库目录> dogcat      # DOM 桩里实跑渲染与领养链路
 > $S/live-replay.sh nullurl/dog-cat-api-spec dogcat   # 抓线上真实文件回放
 
@@ -308,4 +314,6 @@ CAT API 的附录扩充仍在等待审批。提交前请先阅读 `spec/cat.html
     频道是零认证的公共 Broadcast —— 谁都能往里发，所以**收到的造型一律先净化再渲染**
     （去脚本、去事件属性、去一切链接属性，再按 viewBox 定死外框），这一步有断言覆盖。
     连不上就退到演示模式：按钮照按、流程照走，只是送不出去也接不进来。
+    它对外发布的那组凭证是**公开的 anon 密钥**加**写死的频道名**，不含任何服务端密钥；
+    §3.10《接入凭证》与 `assets/crosspet-credentials.json` 记的是同一组值。
 - 不需要为 CAT 侧补充更多附录而争论。它们拒绝的理由很充分
